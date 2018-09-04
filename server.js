@@ -22,7 +22,6 @@ var server = http.createServer(function(request, response){
   /******** 从这里开始看，上面不要看 ************/
 
   if(path == "/"){
-
     let string = fs.readFileSync('./index.html','utf8')
     let cookies = ''
     if(request.headers.cookie){
@@ -156,12 +155,18 @@ var server = http.createServer(function(request, response){
       }
       response.end()
     })
-    }  else if(path == '/style.css'){
+  }else if(path === '/css/style.css'){
+    let string = fs.readFileSync('./css/style.css', 'utf8')
+    response.setHeader('Cache-Control', 'max-age=30')
     response.setHeader('Content-Type','text/css')
-    response.write("h1 {color:red}")
+    response.write(string)
     response.end()
-  }else if(path == "/main.js"){
+  }else if(path === "/js/main.js"){
+    console.log(path)
+    let string = fs.readFileSync('./js/main.js','utf8')
     response.setHeader('Content-Type','text/javascript,charset=utf-8')
+    response.setHeader('Cache-Control','max-age=30')
+    response.write(string)
     response.end()
   }else{
     response.statusCode = 404
